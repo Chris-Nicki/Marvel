@@ -1,0 +1,50 @@
+.character-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); 
+    grid-gap: 10px; 
+    width: 100%; 
+  }
+
+.characterCard {
+    background-color: #202020;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    margin: 5px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 200px; 
+    height: 250px;
+  }
+  
+  .characterCard img {
+    width: 100%;
+    height: 150px; 
+    object-fit: cover; 
+    border-radius: 5px;
+    padding: 10px;
+    margin: 2px;
+
+  }
+
+  .character-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+
+  .button {
+    font-size: 18px;
+    margin-bottom: 5px;
+    color: #EC1D24;
+  }
+
+  .button:hover {
+   color: aqua;
+  }
+
+
+ 

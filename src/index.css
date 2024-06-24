@@ -1,0 +1,21 @@
+
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+  
+  background: linear-gradient(rgba(248, 151, 126, 0.2), rgba(15,168,198, .5)), url('../public/getting-into-comics-a-general-guide.jpg');
+  background-repeat: no-repeat;                
+  background-position: center;                
+  background-attachment: fixed;                
+  background-size: cover;
+  
+}
+
+h1 {
+  color: aqua;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  text-align: center;
+}
+
