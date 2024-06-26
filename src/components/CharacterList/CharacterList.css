@@ -36,15 +36,12 @@
   }
 
 
-  .button {
+  .card-body {
     font-size: 18px;
     margin-bottom: 5px;
     color: #EC1D24;
   }
 
-  .button:hover {
-   color: aqua;
-  }
 
 
  

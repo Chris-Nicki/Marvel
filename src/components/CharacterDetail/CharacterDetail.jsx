@@ -2,18 +2,21 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const CharacterDetail = ({ character, apiKey, hash }) => {
+  const [characterDetails, setCharacterDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [details, setDetails] = useState(null);
+  const [error, setError] = useState(null);
 
-  const fetchCharacterDetails = async (characterId) => {
+  const handleClick = async () => {
     setIsLoading(true);
+    setError(null);
+
     try {
       const response = await axios.get(
-        `https://gateway.marvel.com/v1/public/characters/${characterId}?ts=1&apikey=${apiKey}&hash=${hash}`
+        `https://gateway.marvel.com/v1/public/characters/${character.id}?ts=1&apikey=${apiKey}&hash=${hash}`
       );
-      setDetails(response.data.data.results[0]);
+      setCharacterDetails(response.data.data.results[0]); // Assuming single result
     } catch (error) {
-      console.error(error);
+      setError(error);
     } finally {
       setIsLoading(false);
     }
@@ -21,41 +24,34 @@ const CharacterDetail = ({ character, apiKey, hash }) => {
 
   useEffect(() => {
     if (character) {
-      fetchCharacterDetails(character.id);
+      handleClick(); // Fetch details on component mount
     }
-  }, [character]);
-  const renderDetails = () => {
-    if (!details) {
-      return null;
-    }
+  }, [character]); // Refetch details when character changes
 
-    const { name, description, comics } = details;
+  if (isLoading) {
+    return <p>Loading character details...</p>;
+  }
 
-    return (
-      <div>
-        <h2>{name}</h2>
-        <p>{description}</p>
-        <h3>Comics</h3>
-        <ul>
-          {comics.items.map((comic) => (
-            <li key={comic.name}>{comic.name}</li>
-          ))}
-        </ul>
-      </div>
-    );
-  };
+  if (error) {
+    return <p>Error fetching character details: {error.message}</p>;
+  }
+
+  if (!characterDetails) {
+    return null; // No character details to display yet
+  }
+
+  const { name, description, comics } = characterDetails;
 
   return (
     <div>
-      {character && (
-        <img
-          src={character.thumbnail.path + '.' + character.thumbnail.extension}
-          alt={character.name}
-          onClick={() => fetchCharacterDetails(character.id)}
-          style={{ cursor: 'pointer' }} 
-        />
-      )}
-      {isLoading ? <p>Loading...</p> : renderDetails()}
+      <h2>{name}</h2>
+      <p>{description}</p>
+      <h3>Comics:</h3>
+      <ul>
+        {comics.items.map((comic) => (
+          <li key={comic.name}>{comic.name}</li>
+        ))}
+      </ul>
     </div>
   );
 };
