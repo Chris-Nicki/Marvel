@@ -43,5 +43,14 @@
   }
 
 
+  .detailsCard {
 
+    background-color:  #202020;
+    color: red;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+    border-radius: 10px;
+}
  

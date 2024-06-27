@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './CharacterList.css';
-import '../CharacterDetail/CharacterDetail'; 
 import CharacterDetail from '../CharacterDetail/CharacterDetail';
 
-const publicKey = 'e632f36798412a89cc237f61ed364dcd'; 
-const hash = 'fe72205c6b60e63a1923f440932c53b8'; 
+const publicKey = 'e632f36798412a89cc237f61ed364dcd';
+const hash = 'fe72205c6b60e63a1923f440932c53b8';
 
 const CharacterList = () => {
   const [characters, setCharacters] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedCharacter, setSelectedCharacter] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +19,9 @@ const CharacterList = () => {
       try {
         const response = await axios.get(
           `https://gateway.marvel.com/v1/public/characters?ts=1&apikey=${publicKey}&hash=${hash}`
+          
         );
+        
         setCharacters(response.data.data.results);
       } catch (error) {
         setError(error);
@@ -31,12 +33,8 @@ const CharacterList = () => {
     fetchData();
   }, []);
 
-  const [selectedCharacter, setSelectedCharacter] = useState(null);
-
-  const handleCharacterClick = (id) => {
-   
-    setSelectedCharacter(id);
-    console.log('Selected character ID:', id);
+  const handleCharacterClick = (character) => {
+    setSelectedCharacter(character);
   };
 
   return (
@@ -46,24 +44,20 @@ const CharacterList = () => {
       {characters.length > 0 && (
         characters.map((character) => (
           <div className="characterCard" key={character.id}>
-            <div></div>
             <img
               src={`${character.thumbnail.path}.${character.thumbnail.extension}`}
               alt={character.name}
-              onClick={() => handleCharacterClick(character.id)}
+              onClick={() => handleCharacterClick(character)}
             />
-            <div className="card-body">
-              <div>{character.name}</div>
-              {selectedCharacter && (
-              <CharacterDetail characterId={selectedCharacter.id} apiKey={publicKey} hash={hash} />
-            )}
-            </div>
+            <div className="card-body">{character.name}</div>
           </div>
         ))
       )}
+      <div className='detailsCard'>
+      {selectedCharacter && <CharacterDetail character={selectedCharacter} apiKey={publicKey} hash={hash} />}
+      </div>
     </div>
   );
 };
 
 export default CharacterList;
-

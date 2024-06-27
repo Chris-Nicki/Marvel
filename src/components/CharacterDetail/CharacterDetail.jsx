@@ -1,32 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const CharacterDetail = ({ character, apiKey, hash }) => {
-  const [characterDetails, setCharacterDetails] = useState(null);
+import './CharacterDetails.module.css'
+
+import '../CharacterList/CharacterList'
+
+
+
+const CharacterDetail = ({ character, publicKey, hash }) => {
+  const [details, setDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleClick = async () => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const response = await axios.get(
-        `https://gateway.marvel.com/v1/public/characters/${character.id}?ts=1&apikey=${apiKey}&hash=${hash}`
-      );
-      setCharacterDetails(response.data.data.results[0]); // Assuming single result
-    } catch (error) {
-      setError(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const characterId = character?.id;
+  
+  
 
   useEffect(() => {
-    if (character) {
-      handleClick(); // Fetch details on component mount
-    }
-  }, [character]); // Refetch details when character changes
+    const fetchData = async () => {
+      if (!characterId) return;
+
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const response = await axios.get(
+          `https://gateway.marvel.com/v1/public/characters/${characterId}?ts=1&apikey=${publicKey}&hash=${hash}`
+        );
+        
+        setDetails(response.data.data.results[0]);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [characterId, publicKey, hash]);
+
+  const handleClick = () => {
+    if (!characterId) return;
+    fetchData();
+  };
 
   if (isLoading) {
     return <p>Loading character details...</p>;
@@ -36,22 +52,21 @@ const CharacterDetail = ({ character, apiKey, hash }) => {
     return <p>Error fetching character details: {error.message}</p>;
   }
 
-  if (!characterDetails) {
-    return null; // No character details to display yet
+  if (!character || !details) {
+    return null;
   }
 
-  const { name, description, comics } = characterDetails;
+  const { name, description, comics } = details;
+
+  const comicsList = comics?.items?.map((comic) => comic.name).join(', ');
 
   return (
-    <div>
+    <div  onClick={handleClick}>
+      <div className='detailsCard'>
       <h2>{name}</h2>
       <p>{description}</p>
-      <h3>Comics:</h3>
-      <ul>
-        {comics.items.map((comic) => (
-          <li key={comic.name}>{comic.name}</li>
-        ))}
-      </ul>
+      <p>Comics: {comicsList || 'No comics available'}</p>
+      </div>
     </div>
   );
 };
