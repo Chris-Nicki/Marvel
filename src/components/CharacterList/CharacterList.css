@@ -1,8 +1,12 @@
 .character-container {
     display: grid;
+    justify-items: center;
+    column-gap: 5px;
+    row-gap: 10px;
     grid-template-columns: repeat(5, 1fr); 
     grid-gap: 10px; 
     width: 100%; 
+    margin: 0px;
   }
 
 .characterCard {
@@ -42,15 +46,21 @@
     color: #EC1D24;
   }
 
+.details-container {
+display: flex;
+justify-content: center;
+margin: 10px;
 
+}
   .detailsCard {
-
     background-color:  #202020;
     color: red;
+    width:  auto;
     display: flex;
     flex-direction: row;
     justify-content: center;
     text-align: center;
     border-radius: 10px;
-}
+  
  
+  }

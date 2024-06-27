@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import './CharacterDetails.module.css'
 
 import '../CharacterList/CharacterList'
+
 
 
 
@@ -62,7 +62,7 @@ const CharacterDetail = ({ character, publicKey, hash }) => {
 
   return (
     <div  onClick={handleClick}>
-      <div className='detailsCard'>
+      <div>
       <h2>{name}</h2>
       <p>{description}</p>
       <p>Comics: {comicsList || 'No comics available'}</p>

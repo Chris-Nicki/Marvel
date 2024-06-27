@@ -31,14 +31,18 @@ const CharacterList = () => {
     };
 
     fetchData();
+    
+    
   }, []);
 
-  const handleCharacterClick = (character) => {
-    setSelectedCharacter(character);
+  const handleCharacterClick = (characterId) => {
+    setSelectedCharacter(characterId);
+    
   };
 
   return (
-    <div className="character-container">
+    <div>
+      <div className="character-container">
       {isLoading && <p>Loading characters...</p>}
       {error && <p>Error: {error.message}</p>}
       {characters.length > 0 && (
@@ -53,10 +57,14 @@ const CharacterList = () => {
           </div>
         ))
       )}
-      <div className='detailsCard'>
-      {selectedCharacter && <CharacterDetail character={selectedCharacter} apiKey={publicKey} hash={hash} />}
+    </div>
+      <div className="details-container">
+        <div className='detailsCard'>
+      {selectedCharacter && <CharacterDetail character={selectedCharacter} publicKey={publicKey} hash={hash} />}
+      </div>
       </div>
     </div>
+    
   );
 };
 
